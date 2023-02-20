@@ -1,5 +1,5 @@
 import { Client, Events, GatewayIntentBits } from 'discord.js';
-import commands from './app/interaction-create-handlers';
+import commands from './app/commands';
 
 const { CLIENT_TOKEN } = process.env;
 
