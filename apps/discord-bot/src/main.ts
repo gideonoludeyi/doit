@@ -1,5 +1,5 @@
 import { Client, Events, GatewayIntentBits } from 'discord.js';
-import interactionCreateHandlers from './app/interaction-create-handlers';
+import commands from './app/interaction-create-handlers';
 
 const { CLIENT_TOKEN } = process.env;
 
@@ -8,9 +8,7 @@ const client = new Client({
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-  await Promise.all(
-    interactionCreateHandlers.map((handler) => handler(interaction))
-  );
+  await Promise.all(commands.map((command) => command.handle(interaction)));
 });
 
 client.once(Events.ClientReady, (c) => {

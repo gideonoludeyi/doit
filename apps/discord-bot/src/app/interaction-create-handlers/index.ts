@@ -1,3 +1,3 @@
-import { handler as pingHandler } from './ping';
+import * as pingCommand from './ping';
 
-export default [pingHandler];
+export default [pingCommand];

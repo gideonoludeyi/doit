@@ -2,33 +2,34 @@ import {
   ActionRowBuilder,
   Interaction,
   ModalBuilder,
+  SlashCommandBuilder,
   TextInputBuilder,
   TextInputStyle,
 } from 'discord.js';
-import pingSlashCommand from './slash-command';
 
-const modalId = 'myModal';
-const textInputId = 'myTextInput';
+export const data = new SlashCommandBuilder()
+  .setName('ping')
+  .setDescription('Replies with Pong!');
 
 const textInput = new TextInputBuilder()
-  .setCustomId(textInputId)
+  .setCustomId('myTextInput')
   .setLabel('Ping Input')
   .setStyle(TextInputStyle.Short);
 
 const modal = new ModalBuilder()
-  .setCustomId(modalId)
+  .setCustomId('myModal')
   .setTitle('Ping Modal')
   .addComponents(
     new ActionRowBuilder<TextInputBuilder>().addComponents(textInput)
   );
 
-export async function handler(interaction: Interaction) {
+export async function handle(interaction: Interaction) {
   if (interaction.isChatInputCommand()) {
-    if (interaction.commandName === pingSlashCommand.name) {
+    if (interaction.commandName === data.name) {
       await interaction.showModal(modal);
     }
   } else if (interaction.isModalSubmit()) {
-    if (interaction.customId === modal.data.custom_id) {
+    if (interaction.customId && interaction.customId === modal.data.custom_id) {
       const textInputValue = interaction.fields.getTextInputValue(
         textInput.data.custom_id
       );
