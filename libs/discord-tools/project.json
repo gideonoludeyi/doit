@@ -1,0 +1,67 @@
+{
+  "name": "discord-tools",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/discord-tools/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/discord-tools",
+        "main": "libs/discord-tools/src/index.ts",
+        "tsConfig": "libs/discord-tools/tsconfig.lib.json",
+        "assets": [
+          "libs/discord-tools/*.md",
+          {
+            "input": "./libs/discord-tools/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/discord-tools/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/discord-tools",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/discord-tools",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/discord-tools/**/*.ts",
+          "libs/discord-tools/generators.json",
+          "libs/discord-tools/executors.json",
+          "libs/discord-tools/package.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/discord-tools/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

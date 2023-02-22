@@ -46,6 +46,12 @@
           "codeCoverage": true
         }
       }
+    },
+    "deploy-commands": {
+      "executor": "@doit/discord-tools:deploy-commands",
+      "options": {
+        "commands-path": "apps/discord-bot/src/app/commands/index.ts"
+      }
     }
   },
   "tags": []
