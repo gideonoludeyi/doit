@@ -11,7 +11,5 @@
       "description": ".ts filepath to load commands"
     }
   },
-  "required": [
-    "commands-path"
-  ]
+  "required": ["commands-path"]
 }
