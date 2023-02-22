@@ -1,4 +1,17 @@
 # Add files here to ignore them from prettier formatting
-
 /dist
 /coverage
+.github
+/.vscode
+/.idea
+/.github
+/coverage
+/.yarn
+/dist
+tmp
+/test
+/build
+node_modules
+/package.json
+/package-lock.json
+
