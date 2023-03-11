@@ -1,4 +1,7 @@
-import * as pingCommand from './ping';
-import * as createCommand from './create';
+import { TaskRepo } from '../task-repo';
+import { CreateTaskCommand } from './create';
+import { PingCommand } from './ping';
 
-export default [pingCommand, createCommand];
+const taskRepo = new TaskRepo();
+
+export default [new PingCommand(), new CreateTaskCommand(taskRepo)];

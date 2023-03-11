@@ -4,6 +4,8 @@ import {
   SlashCommandBuilder,
   SlashCommandStringOption,
 } from 'discord.js';
+import { TaskRepo } from '../task-repo';
+import { BaseCommand } from './base';
 
 const titleField = new SlashCommandStringOption()
   .setName('title')
@@ -21,33 +23,41 @@ export const data = new SlashCommandBuilder()
   .addStringOption(titleField)
   .addStringOption(descriptionField);
 
-export async function handle(interaction: Interaction) {
-  if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName !== data.name) return;
-
-  const title = interaction.options.getString(titleField.name);
-
-  let taskEmbed = new EmbedBuilder()
-    .setColor(0x0099ff)
-    .setTitle(title)
-    .setTimestamp();
-
-  const description =
-    interaction.options.getString(descriptionField.name) ?? '';
-  if (description.length > 0) {
-    taskEmbed = taskEmbed.addFields({
-      name: 'Description',
-      value: description,
-    });
+export class CreateTaskCommand extends BaseCommand {
+  constructor(private repo: TaskRepo) {
+    super(data.toJSON());
   }
 
-  taskEmbed = taskEmbed.addFields({
-    name: 'Status',
-    value: 'INCOMPLETE',
-  });
+  public async handle(interaction: Interaction) {
+    if (!interaction.isChatInputCommand()) return;
+    if (interaction.commandName !== data.name) return;
 
-  await interaction.reply({
-    embeds: [taskEmbed],
-    ephemeral: true,
-  });
+    const title = interaction.options.getString(titleField.name);
+    const description =
+      interaction.options.getString(descriptionField.name) ?? '';
+
+    this.repo.create({ title, description });
+
+    let taskEmbed = new EmbedBuilder()
+      .setColor(0x0099ff)
+      .setTitle(title)
+      .setTimestamp();
+
+    if (description.length > 0) {
+      taskEmbed = taskEmbed.addFields({
+        name: 'Description',
+        value: description,
+      });
+    }
+
+    taskEmbed = taskEmbed.addFields({
+      name: 'Status',
+      value: 'INCOMPLETE',
+    });
+
+    await interaction.reply({
+      embeds: [taskEmbed],
+      ephemeral: true,
+    });
+  }
 }

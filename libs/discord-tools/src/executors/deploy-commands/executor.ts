@@ -1,8 +1,8 @@
-import { REST, Routes, SlashCommandBuilder } from 'discord.js';
+import { REST, Routes } from 'discord.js';
 import { DeployCommandsExecutorSchema } from './schema';
 
 interface CommandsModule {
-  default: Array<{ data: SlashCommandBuilder }>;
+  default: Array<{ data: object }>;
 }
 
 export default async function runExecutor(
@@ -18,7 +18,7 @@ export default async function runExecutor(
 
   return discordAPI
     .put(Routes.applicationCommands(APPLICATION_ID), {
-      body: commands.map((command) => command.data.toJSON()),
+      body: commands.map((command) => command.data),
     })
     .then(() => {
       console.log('🚀 Registered Slash Commands!');
